@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "npx vite --host",
+    "start": "node server.js",
     "dev": "npx vite --host",
     "build": "npx vite build",
-    "serve": "npx vite preview --host",
+    "serve": "node server.js",
     "lint": "npx eslint .",
     "preview": "npx vite preview --host"
   },
   "dependencies": {
+    "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.0.0",
