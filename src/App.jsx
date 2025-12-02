@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // Environment variables (baked at build time)
 const GREETING = import.meta.env.VITE_GREETING || 'Hello from Worker App Runner!'
@@ -12,6 +12,14 @@ const FRAMER_IMAGE = {
 
 function App() {
   const [imageError, setImageError] = useState(false)
+  const [serverIp, setServerIp] = useState('Loading...')
+
+  useEffect(() => {
+    fetch('/ip')
+      .then(res => res.json())
+      .then(data => setServerIp(data.ip))
+      .catch(() => setServerIp('Failed to fetch'))
+  }, [])
 
   const handleImageError = () => {
     setImageError(true)
@@ -145,6 +153,27 @@ function App() {
 
         <div style={greetingStyles}>
           {GREETING}
+        </div>
+
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '3rem',
+          padding: '1.5rem 2rem',
+          background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
+          borderRadius: '12px',
+          border: '2px solid #10b981',
+          boxShadow: '0 4px 15px rgba(16, 185, 129, 0.15)'
+        }}>
+          <span style={{ fontSize: '1.1rem', color: '#065f46', fontWeight: '600' }}>
+            Server IP: <code style={{
+              backgroundColor: '#064e3b',
+              color: '#a7f3d0',
+              padding: '0.25rem 0.75rem',
+              borderRadius: '6px',
+              fontFamily: 'monospace',
+              fontSize: '1.15rem'
+            }}>{serverIp}</code>
+          </span>
         </div>
 
         <section style={{ marginBottom: '3rem' }}>

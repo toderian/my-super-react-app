@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import os from 'os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -10,6 +11,26 @@ const PORT = process.env.PORT || 3000;
 // Health endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'healthy' });
+});
+
+// IP endpoint - returns server's IP address
+app.get('/ip', (req, res) => {
+  const networkInterfaces = os.networkInterfaces();
+  let ipAddress = 'Unknown';
+
+  for (const interfaceName of Object.keys(networkInterfaces)) {
+    const interfaces = networkInterfaces[interfaceName];
+    for (const iface of interfaces) {
+      // Skip internal (loopback) and non-IPv4 addresses
+      if (!iface.internal && iface.family === 'IPv4') {
+        ipAddress = iface.address;
+        break;
+      }
+    }
+    if (ipAddress !== 'Unknown') break;
+  }
+
+  res.json({ ip: ipAddress });
 });
 
 // Serve React static files (Vite outputs to 'dist')
