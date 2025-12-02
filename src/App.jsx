@@ -15,7 +15,7 @@ function App() {
   const [serverIp, setServerIp] = useState('Loading...')
 
   useEffect(() => {
-    fetch('/ip')
+    fetch('/api/ip')
       .then(res => res.json())
       .then(data => setServerIp(data.ip))
       .catch(() => setServerIp('Failed to fetch'))
